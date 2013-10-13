@@ -22,6 +22,31 @@ mojit MVC
 the ActionContext object and the `ActionContext` addons
 templates
 
+frontend/test/03_frame_mojit
+css/javascript
+2 ways to add
+1,application.json
+    "specs": {
+      "tribframe": {
+        "type": "HTMLFrameMojit",
+        "config": {
+          "deploy": true,
+          "title": "Trib - YUI/Mojito Developer Dashboard",
+          "child": {
+            "type": "Github"
+          },
+          "assets": {
+            "top": {
+              "css": ["/static/03_frame_mojit/assets/trib.css"]
+            }
+          }
+        }
+      }
+    }
+2,
+ac.assets.addCss
+frontend/test/03_frame_mojit/mojits/Github/controller.server.js
+     ac.assets.addCss('/static/03_frame_mojit/assets/custom.css','top');
 
 
 
