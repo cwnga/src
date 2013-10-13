@@ -6,6 +6,24 @@ mojito@0.7.5
 mojito-cli@0.1.2
 //registry.npmjs.org/nodemon/-/nodemon-0.7.10.tgz
 
+dir:
+frontend/test/01_mojito_cli_basics/
+
+creating applications and mojits
+testing applications and mojits
+code sanitization
+running applications
+specifying a context (runtime environment) to run an applications
+
+
+frontend/test/02_mojits/
+mojit definitions and instances
+mojit MVC
+the ActionContext object and the `ActionContext` addons
+templates
+
+
+
 
 mac ::
 mojito-cli@0.1.2 ../../../../node_modules/mojito-cli
