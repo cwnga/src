@@ -1,11 +1,11 @@
 src
-===
+==============================================================================
 set past
 env:
 mojito@0.7.5
 mojito-cli@0.1.2
 //registry.npmjs.org/nodemon/-/nodemon-0.7.10.tgz
-
+==============================================================================
 dir:
 frontend/test/01_mojito_cli_basics/
 
@@ -15,6 +15,7 @@ code sanitization
 running applications
 specifying a context (runtime environment) to run an applications
 
+##############################################################################
 
 frontend/test/02_mojits/
 mojit definitions and instances
@@ -22,7 +23,14 @@ mojit MVC
 the ActionContext object and the `ActionContext` addons
 templates
 
+
+##############################################################################
 frontend/test/03_frame_mojit
+frame:
+    "child" : {
+                "type" : "Github"
+              }
+
 css/javascript
 2 ways to add
 1,application.json
@@ -48,8 +56,40 @@ ac.assets.addCss
 frontend/test/03_frame_mojit/mojits/Github/controller.server.js
      ac.assets.addCss('/static/03_frame_mojit/assets/custom.css','top');
 
+##############################################################################
+frontend/test/04_composite_mojits/
+use: "type": "HTMLFrameMojit"
+      "tribframe": {
+        "type": "HTMLFrameMojit",   ///MOJITO keywork, render can not control, by sorting
+        "config": {
+          "deploy": true,
+          "title": "Trib - YUI/Mojito Developer Dashboard",
+          "child": {
+            "type": "PageLayout",   ///custom use:  mojito create mojit PageLayout
+            "config": {
+              "children": {
+                "header": {
+                  "type": "Header"
+                },
+                "body": {
+                  "type": "Body",
+                  "config": {
+                    "children": {
+                      "github": {
+                        "type":"Github"
+                      }
+                    }
+                  }
+                },
+                "footer": {
+                  "type": "Footer"
+                }
+              }
+            }
+          },
 
 
+==============================================================================
 mac ::
 mojito-cli@0.1.2 ../../../../node_modules/mojito-cli
 ├── mojito-cli-start@0.0.2
