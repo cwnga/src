@@ -95,6 +95,10 @@ mojito create mojit Twitter
 to get data
 
 
+#############################################################################
+frontend/test/serviceplus
+add Search, YQL
+
 ==============================================================================
 mac ::
 mojito-cli@0.1.2 ../../../../node_modules/mojito-cli
