@@ -6,22 +6,22 @@ YUI.add('Github-tests', function(Y) {
         A = YUITest.Assert;
 
     suite.add(new YUITest.TestCase({
-        
+
         name: 'Github user tests',
-        
+
         setUp: function() {
             controller = Y.mojito.controllers.Github;
         },
         tearDown: function() {
             controller = null;
         },
-        
+
         'test mojit': function() {
             var ac,
                 modelData,
                 assetsResults,
                 doneResults;
-            modelData = { x:'y' };
+            modelData = { status: "Mojito is working."};
             ac = {
                 assets: {
                     addCss: function(css) {
@@ -33,10 +33,16 @@ YUI.add('Github-tests', function(Y) {
                         A.areEqual('GithubModelFoo', modelName, 'wrong model name');
                         return {
                             getData: function(cb) {
+
                                 cb(null, modelData);
                             }
                         }
                     }
+                },
+                 config: {
+                     get: function(name){
+                         return 'hihi';
+                     }
                 },
                 done: function(data) {
                     doneResults = data;
@@ -48,15 +54,17 @@ YUI.add('Github-tests', function(Y) {
             controller.index(ac);
             A.areSame('./index.css', assetsResults);
             A.isObject(doneResults);
-            A.areSame('Mojito is working.', doneResults.status);
-            A.isObject(doneResults.data);
-            A.isTrue(doneResults.data.hasOwnProperty('x'));
-            A.areEqual('y', doneResults.data['x']);
-            
+            A.areSame('Mojito is working.', doneResults.github.status);
+            //A.isObject(doneResults.data);
+
+            //A.isTrue(doneResults.data.hasOwnProperty('x'));
+
+            //A.areEqual('y', doneResults.data['x']);
+
         }
-        
+
     }));
-    
+
     YUITest.TestRunner.add(suite);
-    
+
 }, '0.0.1', {requires: ['mojito-test', 'Github']});

@@ -99,6 +99,23 @@ to get data
 frontend/test/serviceplus
 add Search, YQL
 
+
+####
+06
+require
+"optionalDependencies": {
+      "simple-twitter": "~1.0.0",
+         "yahoo-arrow": "~0.0.77",
+            "phantomjs": ">=1.8.0"
+        },
+
+in test, require
+{ requires: [ 'mojito-test', ''mojito-your-mojits' ] }
+
+
+
+
+
 ==============================================================================
 mac ::
 mojito-cli@0.1.2 ../../../../node_modules/mojito-cli
