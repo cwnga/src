@@ -100,7 +100,7 @@ frontend/test/serviceplus
 add Search, YQL
 
 
-####
+#############################################################################
 06
 require
 "optionalDependencies": {
@@ -111,6 +111,12 @@ require
 
 in test, require
 { requires: [ 'mojito-test', ''mojito-your-mojits' ] }
+
+
+
+#############################################################################
+07
+binder: client run mojito
 
 
 
