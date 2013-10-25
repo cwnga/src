@@ -118,6 +118,93 @@ in test, require
 07
 binder: client run mojito
 
+#############
+#############################################################################
+08 config
+
+config
+
+
+application.json
+之前：
+.  49                     "assets": {
+   50                         "top": {
+   51                             "css": [
+   52                                 "http://yui.yahooapis.com/3.9.0/build/cssnormalize/cssnormalize-min.css",
+   53                             "http://yui.yahooapis.com/gallery-2013.03.13-20-05/build/gallerycss-cssform/gallerycss-cssform-min.css",
+   54                             "http://yui.yahooapis.com/3.9.0/build/cssgrids-responsive/cssgrids-responsive-min.css",
+   55                             "http://yui.yahooapis.com/3.9.0/build/cssbutton/cssbutton-min.css",
+   56                             "http://yui.yahooapis.com/gallery-2013.03.13-20-05/build/gallerycss-csslist/gallerycss-csslist-min.css",
+   57                             "https://rawgithub.com/tilomitra/yuicss-common/master/ui.css",
+   58                             "/static/07_binders/assets/trib.css"
+   59                                 ]
+   60                         }
+   61                     }
+
+現在，在上面先定義
+    3     "settings": [ "master" ],
+    4         "appPort": "8666",
+    5         "staticHandling": {
+    6              "appName": "trib"
+    7                 },
+    8         "specs": {
+  "/static/07_binders/assets/trib.css"  --> "/static/trib/assets/trib.css"
+
+
+set log info by evn
+
+1 [
+2 {
+3 "settings": [ "environment:development" ],
+4 "staticHandling": {
+5 "forceUpdate": true 6 },
+7 "yui":{
+8 "config": {
+9 "debug": true,
+   10 "logLevel": "debug"
+   11 }
+   12 }
+   13 },
+   14 {
+   15 "settings": [ "environment:production" ],
+   16 "staticHandling": {
+   17 "forceUpdate": false
+   18 },
+   19 "yui":{
+   20 "config": {
+   21 "debug": false,
+   22 "logLevel": "none"
+   23 }
+   24 }
+.  25 },
+   26 {
+   27 "settings": [ "master" ],
+   28 "appPort": "8666",
+   29 "staticHandling": {
+   30 "appName": "trib"
+   31 },
+   32 "yui":{
+
+
+
+ -addon
+mojito-params-addon
+
+ mojits/Gallery/definition.json
+ [ Gallery Pushes",     "yuititle":"YUI Gallery Pushes",     "yqlTable":"store://owgYr7PT7CWIOWMaWs9Stb"   } ]
+    tablePath = ac.config.getDefinition('yqlTable', 'notfound');
+
+routes.jsony
+
+  1.
+
+[  {    "settings": [ "master" ],    "root": {      "verbs": ["get"],      "path":"/",      "call":"tribframe.index",      "params": {"view_type":"yui"}    },    "mojito_view":{      "verbs": ["get"],      "path":"/mojito",      "call":"tribframe.index",      "params": {"view_type":"mojito"}    }  }]
+  2.
+
+
+  view_type = ac.params.getFromRoute('view_type') || "yui";
+
+
 
 
 
