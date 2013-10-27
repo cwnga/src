@@ -196,28 +196,39 @@ YUI().use('node', 'yql', function(Y) {
     Y.one("#search_btn").on("click", function (e) {
         kw = Y.one("#kw").get('value');
         console.log(kw);
-
-        sql = 'select * from json where url="http://tw.serviceplus.yahoo.com/search/search_services?kw=bmw&catid=&undedup=0&unspc=0&cata=&catb=&pricea=&priceb=&items=&areaa=tw&areab=&areac=&sort=3&total=3824&cp=2&ppa=30&pa=10&type=srplist&vmode=0&action=srplistquery"';
-        var q = Y.YQL(sql, {
-            //Tell JSONP to not cache this request so we get new images on each request
-            allowCache: false,
-            on: {
-                success: function(r) {
-                    if (r.query && r.query.results) {
-                        console.log(r.query.results.json.data);
-                        handleSearchResult(
-                            Y.one("#search_result"),
-                            r.query.results.json.data
-                            )
-                            ;
+        if (kw) {
+            resetSearchResult(Y.one("#search_result"));///reset
+            sql = 'select * from json where url="http://tw.serviceplus.yahoo.com/search/search_services?'
+            +'kw='+kw
+            +'&catid=&undedup=0&unspc=0&cata=&catb=&pricea=&priceb=&items=&areaa=tw&areab=&areac=&sort=3&total=3824&cp=1&ppa=30&pa=10&type=srplist&vmode=0&action=srplistquery"';
+            var q = Y.YQL(sql, {
+                //Tell JSONP to not cache this request so we get new images on each request
+                allowCache: false,
+                on: {
+                    success: function(r) {
+                        if (r.query && r.query.results) {
+                            if (r.query.results.json.data instanceof Array) {
+                                console.log(r.query.results.json.data);
+                                handleSearchResult(
+                                    Y.one("#search_result"),
+                                    r.query.results.json.data
+                                    )
+                                    ;
+                                }
+                            }
                         }
                     }
-                }
-            });
-            q.send;
-            //Y.later(8000, q, q.send, null, true);
+                });
+                q.send;
+                //Y.later(8000, q, q.send, null, true);
+            }
 
         });
+        function resetSearchResult(node)
+        {
+             node.setHTML('');
+
+        }
         function handleSearchResult(node, searchResult)
         {
             allResult = node.getHTML();

@@ -306,6 +306,9 @@ in controller::
 title: ac.intl.lang("YUITitle"),
 mojito-intl-addon
 
+#############################################################################
+mobile
+add serviceplus mobile search
 
 
 
