@@ -1,0 +1,6 @@
+dt { font-weight: bold; }
+.sel { background-color: #FF4; }
+
+#twitter h3 strong {
+  background-image: url(/static/Twitter/assets/favicon-twitter.png);
+}
