@@ -205,6 +205,86 @@ routes.jsony
   view_type = ac.params.getFromRoute('view_type') || "yui";
 
 
+==============================================================================
+09
+Handlebars, Templates, and Custom Views
+
+in application.json
+[
+  ...,
+  {
+    "settings": [ "device:android" ],
+    "selector": "android"
+  },
+  {
+    "settings": [ "device:ipad" ],
+    "selector": "ipad"
+  },
+  {
+    "settings": [ "device:iphone" ],
+    "selector": "iphone"
+  }
+]
+
+2.
+Handlebars function(in partent mojit)
+in mojit controller
+add function
+ex
+YUI.add('helperMojit', function(Y, NAME) {
+function toLinkHelper(title, url) {
+    return "<a href='" + url + "'>" + title + "</a>";
+  }
+  index: function(ac) {
+    var data = {
+    ac.helpers.expose('toLink',toLinkHelper); // use: expose to let all mojits avalibe to use it
+    ac.done({ yui: data });
+  }
+
+}, '0.0.1', {requires: ['mojito', 'mojito-helpers-addon']});///< need to add mojito-helpers-addon
+
+3. in child
+controller:
+ac.helpers.get();
+mojito-helpers-addon///< add
+
+view:
+use {{{toLink parm1 parm2 ...}}}, ex
+<div id="{{mojit_view_id}}">
+  <h3>YUI Modules</h3>
+  <ul>
+  {{#each yui.modules}}
+    <li>{{{toLink title user_guide }}}</li>
+  {{/each}}
+  </ul>
+</div>
+#####
+PARTIALS:: template include
+Mojito allows you to have both global (shared by all mojits) or local (available only to one mojit) partials depending on the context.
+Global and local partials are used the same way in templates,
+but the location of the partials is different. Data that is available to templates is also available to partials.
+
+
+
+Handlebars expressions that other templates can include.
+GLOBAL PARTIALS
+{app_dir}/views/partials
+
+local partials
+LOCAL PARTIALS
+{app_dir}/mojits/{mojit_name}/views/partials
+
+apps/views/particals/ widget_heading.hb.html
+
+in view:
+ {{> partial_name}}
+
+ex:
+ {{> widget_heading}}
+
+
+
+
 
 
 
