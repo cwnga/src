@@ -279,7 +279,7 @@ YUI().use('node', 'yql', 'node-scroll-info','node-style', function(Y) {
     });
 
     function searchWs(kw, cp)
-    {<!--{{{-->
+    {
 
         console.log(kw+','+cp);
 
@@ -315,7 +315,7 @@ YUI().use('node', 'yql', 'node-scroll-info','node-style', function(Y) {
             q.send;
             //Y.later(8000, q, q.send, null, true);
         }
-    }<!--}}}-->
+    }
 
     Y.one("#search_btn").on("click", function (e) {
         kw = Y.one("#kw").get('value');
