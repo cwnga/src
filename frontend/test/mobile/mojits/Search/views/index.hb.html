@@ -11,6 +11,29 @@
 <title>Trib - YUI/Mojito Developer Dashboard</title>
 
 <style type="text/css">
+  #ycflexsearch {
+      -moz-transition: top ease-out 250ms;
+      -webkit-transition: top ease-out 250ms;
+      background: rgba(255,255,255,.9);
+      background-image: linear-gradient(bottom,rgba(240,240,240,1) 0%,rgba(255,255,255,1) 100%);
+      background-image: -o-linear-gradient(bottom,rgba(240,240,240,1) 0%,rgba(255,255,255,1) 100%);
+      background-image: -moz-linear-gradient(bottom,rgba(240,240,240,1) 0%,rgba(255,255,255,1) 100%);
+      background-image: -webkit-linear-gradient(bottom,rgba(240,240,240,1) 0%,rgba(255,255,255,1) 100%);
+      background-image: -ms-linear-gradient(bottom,rgba(240,240,240,1) 0%,rgba(255,255,255,1) 100%);
+      border: 1px solid #dfdfdf;
+      width:100%;
+      border-radius: 6px;
+      border-top: 0 none;
+      border-top-left-radius: 0;
+      border-top-right-radius: 0;
+      filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr='#ffffffff',endColorstr='#fff0f0f0');
+      padding: 15px 17px;
+      position: fixed;
+      top: -10px;
+      transition: top ease-out 250ms;
+      z-index: 3;
+  }
+
 body {
                 background-color: #F8F8F8;
                 padding-left: 8px;
@@ -190,17 +213,33 @@ dt { font-weight: bold; }
 }
 </style>
 <!--search start-->
-<script src="http://yui.yahooapis.com/3.8.1/build/yui/yui-min.js"></script>
+<script src="http://yui.yahooapis.com/3.13.0/build/yui/yui-min.js"></script>
 <script>
-YUI().use('node', 'yql', function(Y) {
-    Y.one("#search_btn").on("click", function (e) {
-        kw = Y.one("#kw").get('value');
-        console.log(kw);
+YUI().use('node', 'yql', 'node-scroll-info',function(Y) {
+    Y.namespace('serch_parameter').cp=1;//initial
+     Y.namespace('serch_parameter').moreResult = true;
+    var body = Y.one('body');
+
+    body.plug(Y.Plugin.ScrollInfo);
+    body.scrollInfo.on('scrollToBottom', function (e) {
+        // Load more content when the user scrolls to the bottom of the page.
+        Y.namespace('serch_parameter').cp = Y.namespace('serch_parameter').cp+1;
+        kw = Y.namespace('serch_parameter').kw;
+        cp  = Y.namespace('serch_parameter').cp;
+        searchWs(kw, cp);
+    });
+
+    function searchWs(kw, cp)
+    {
+
+        console.log(kw+','+cp);
+
         if (kw) {
-            resetSearchResult(Y.one("#search_result"));///reset
             sql = 'select * from json where url="http://tw.serviceplus.yahoo.com/search/search_services?'
             +'kw='+kw
-            +'&catid=&undedup=0&unspc=0&cata=&catb=&pricea=&priceb=&items=&areaa=tw&areab=&areac=&sort=3&total=3824&cp=1&ppa=30&pa=10&type=srplist&vmode=0&action=srplistquery"';
+            +'&catid=&undedup=0&unspc=0&cata=&catb=&pricea=&priceb=&items=&areaa=tw&areab=&areac=&sort=3&total=3824&'
+            +'cp='+cp
+            +'&ppa=30&pa=10&type=srplist&vmode=0&action=srplistquery"';
             var q = Y.YQL(sql, {
                 //Tell JSONP to not cache this request so we get new images on each request
                 allowCache: false,
@@ -208,100 +247,122 @@ YUI().use('node', 'yql', function(Y) {
                     success: function(r) {
                         if (r.query && r.query.results) {
                             if (r.query.results.json.data instanceof Array) {
-                                console.log(r.query.results.json.data);
+                                //console.log(r.query.results.json.data);
                                 handleSearchResult(
                                     Y.one("#search_result"),
                                     r.query.results.json.data
-                                    )
-                                    ;
-                                }
-                            }
+                                );
+                            } else {
+                                setNoMoreResultFlagAndHtml( Y.one("#search_result"));
+
                         }
                     }
-                });
-                q.send;
-                //Y.later(8000, q, q.send, null, true);
-            }
-
-        });
-        function resetSearchResult(node)
-        {
-             node.setHTML('');
-
-        }
-        function handleSearchResult(node, searchResult)
-        {
-            allResult = node.getHTML();
-            newResult = '';
-
-            for (var key in searchResult){
-                console.log(key);
-                if (key != "0") {
-                    boothLink = searchResult[key].link;
-                    sellerName = searchResult[key].poster;
-                    itemLink = searchResult[key].mlink;
-                    img = searchResult[key].img;
-                    itemTitle = searchResult[key].title;
-                    price = searchResult[key].price;
-                    address = searchResult[key].location;
-                    newResult = newResult+ genItemHtml(boothLink, sellerName , itemLink, img, itemTitle, price, address);
-
                 }
             }
-            allResult = allResult+newResult;
-            node.setHTML(allResult);
-        }
-        function genItemHtml(boothLink, sellerName, itemLink, itemImg, itemTitle, price, address)
-        {
-            /*
-             ad_map_display: "on"
-             ad_summary: "KEY GO全車車門自動吸門裝置3D 影像環景.電熱記憶跑車椅/電尾門頂級配備.黑.白現車多部"
-             advv: "1"
-             desc: "KEY GO全車車門自動吸門裝置3D 影像環景.電熱記憶跑車椅/電尾門頂級配備.黑.白現車多部"
-             h: "120"
-             img: "http://nevec.yimg.com/tw_ec00-0/d6/a8/m1/0000247311480-2162.jpg"
-             lat: "25.047726"
-             link: "http://tw.serviceplus.yahoo.com/booth/seller/Y5293877552"
-             lng: "121.4358"
-             location: "臺灣新北市泰山區中山路二段187之3號"
-             mid: "000014635737"
-             mlink: "http://tw.serviceplus.yahoo.com/item/detail/000014635737"
-             olink: ""
-             poster: "廣碩國際汽車"
-             price: "1"
-             promobg: "0"
-             promokit: "0"
-             ptype: "0"
-             tag: "-1"
-             title: "BMW 535 現車多部228萬起 廣碩國際535i"
-             utime: "2013/10/25 16:43"
-             w: "160"
-             */
+        });
+        q.send;
+        //Y.later(8000, q, q.send, null, true);
+    }
+}
+Y.one("#search_btn").on("click", function (e) {
+    kw = Y.one("#kw").get('value');
+    Y.namespace('serch_parameter').moreResult = true;
+    if (kw) {
 
-            var itemHtml =
-            '<div class="mod" id="blog">'
-            +"\n"+'<h3>'
-            +"\n"+'<strong>'+itemTitle+'</strong>'
-            +"\n"+'<a title="minimize module" class="min" href="#">-</a>'
-            +"\n"+'<a title="close module" class="close" href="#">x</a>'
-            +"\n"+'</h3>'
-            +"\n"+'<div class="inner">'
-            +"\n"+'<ul>'
-            +"\n"+'<li>'
-            +"\n"+'<strong>'
-            +"\n"+'<a href="'+boothLink+'">'+sellerName+'</a><br>'
-            +"\n"+'<a href="'+itemLink+'">'
-            +"\n"+'<img src="'+itemImg+'" alt="'+itemTitle+'">'
-            +"\n"+'</a><br>'
-            +"\n"+'</strong><br>'
-            +"\n"+'<span>價格：'+price+'元</span><br>'
-            +"\n"+'<span>地區：'+address+'</span><br>'
-            +"\n"+'</li>'
-            +"\n"+'</ul>'
-            +"\n"+'</div>'
-            +"\n"+'</div>';
-            return itemHtml;
+        resetSearchResult(Y.one("#search_result"));///reset
+        Y.namespace('serch_parameter').kw = kw;
+        cp = Y.namespace('serch_parameter').cp = 1;
+        searchWs(kw, cp);
+
+    }
+
+});
+function setNoMoreResultFlagAndHtml(node)
+{
+    if ( Y.namespace('serch_parameter').moreResult == true) {
+        allResult = node.getHTML();
+        allResult = allResult + '<div class="mod" id="blog"><h3><strong>No more result</strong></h3></div>';
+        node.setHTML(allResult);
+    }
+    Y.namespace('serch_parameter').moreResult = false;
+}
+
+function resetSearchResult(node)
+{
+    node.setHTML('');
+
+}
+function handleSearchResult(node, searchResult)
+{
+    allResult = node.getHTML();
+    newResult = '';
+
+    for (var key in searchResult){
+        if (key != "0") {
+            boothLink = searchResult[key].link;
+            sellerName = searchResult[key].poster;
+            itemLink = searchResult[key].mlink;
+            img = searchResult[key].img;
+            itemTitle = searchResult[key].title;
+            price = searchResult[key].price;
+            address = searchResult[key].location;
+            newResult = newResult+ genItemHtml(boothLink, sellerName , itemLink, img, itemTitle, price, address);
         }
+    }
+    allResult = allResult+newResult;
+    node.setHTML(allResult);
+}
+function genItemHtml(boothLink, sellerName, itemLink, itemImg, itemTitle, price, address)
+{
+    /*
+     ad_map_display: "on"
+     ad_summary: "KEY GO全車車門自動吸門裝置3D 影像環景.電熱記憶跑車椅/電尾門頂級配備.黑.白現車多部"
+     advv: "1"
+     desc: "KEY GO全車車門自動吸門裝置3D 影像環景.電熱記憶跑車椅/電尾門頂級配備.黑.白現車多部"
+     h: "120"
+     img: "http://nevec.yimg.com/tw_ec00-0/d6/a8/m1/0000247311480-2162.jpg"
+     lat: "25.047726"
+     link: "http://tw.serviceplus.yahoo.com/booth/seller/Y5293877552"
+     lng: "121.4358"
+     location: "臺灣新北市泰山區中山路二段187之3號"
+     mid: "000014635737"
+     mlink: "http://tw.serviceplus.yahoo.com/item/detail/000014635737"
+     olink: ""
+     poster: "廣碩國際汽車"
+     price: "1"
+     promobg: "0"
+     promokit: "0"
+     ptype: "0"
+     tag: "-1"
+     title: "BMW 535 現車多部228萬起 廣碩國際535i"
+     utime: "2013/10/25 16:43"
+     w: "160"
+     */
+
+    var itemHtml =
+    '<div class="mod" id="blog">'
+    +"\n"+'<h3>'
+    +"\n"+'<strong>'+itemTitle+'</strong>'
+    +"\n"+'<a title="minimize module" class="min" href="#">-</a>'
+    +"\n"+'<a title="close module" class="close" href="#">x</a>'
+    +"\n"+'</h3>'
+    +"\n"+'<div class="inner">'
+    +"\n"+'<ul>'
+    +"\n"+'<li>'
+    +"\n"+'<strong>'
+    +"\n"+'<a href="'+boothLink+'">'+sellerName+'</a><br>'
+    +"\n"+'<a href="'+itemLink+'">'
+    +"\n"+'<img src="'+itemImg+'" alt="'+itemTitle+'">'
+    +"\n"+'</a><br>'
+    +"\n"+'</strong><br>'
+    +"\n"+'<span>價格：'+price+'元</span><br>'
+    +"\n"+'<span>地區：'+address+'</span><br>'
+    +"\n"+'</li>'
+    +"\n"+'</ul>'
+    +"\n"+'</div>'
+    +"\n"+'</div>';
+    return itemHtml;
+}
 
     });
     </script>
@@ -312,22 +373,25 @@ YUI().use('node', 'yql', function(Y) {
 </head>
 
 <body>
-    <div id="yui_3_9_1_2_1382866494837_17" class="mojit pageLayout trib" >
-        <h1>Trib - YUI 开发人员仪表板</h1>
-        <a href='/mojito' class='yui3-button swap'>See Mojito Dashboard</a>
+<div id="yui_3_9_1_2_1382866494837_17" class="mojit pageLayout trib" >
         <div class="myheader" >
         <div id="yui_3_9_1_2_1382866494837_8" class="mojit">
             <h3></h3>
         </div>
     </div>
     <div class="mybody" >
-<!--input start-->
-<link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.3.0/pure-min.css">
-    <fieldset>
+    <!--input start-->
+    <div id="ycflexsearch" class="">
+        <img src="http://l.yimg.com/rz/d/yahoo_local_zh-Hant-TW_serviceplus_f_p_350x40_serviceplus.png">
+        <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.3.0/pure-min.css">
         <input type="text" name="kw" id="kw">
         <button id="search_btn" type="submit" class="pure-button pure-button-primary">Search</button>
-    </fieldset>
-<!--input end-->
+        </div>
+        <br/>
+        <br/>
+        <br/>
+    <!--input end-->
+
 
         <div id="yui_3_9_1_2_1382866494837_16" class="mojit">
             <h4 class="bodytext"></h4>
