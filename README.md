@@ -307,6 +307,10 @@ title: ac.intl.lang("YUITitle"),
 mojito-intl-addon
 
 #############################################################################
+frontend/test/socket_server_client
+node server.js
+
+#############################################################################
 mobile
 add serviceplus mobile Search
 v2. add inifi scroll
