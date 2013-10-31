@@ -1,0 +1,55 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Fully customizable and responsive CSS grids.">
+<title>Grids &ndash; Pure</title>
+<link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.3.0/pure-min.css">
+<link rel="stylesheet" href="http://purecss.io/combo/1.6.5?/css/main.css&/css/grids.css&/css/rainbow/baby-blue.css">
+
+<script src="http://yui.yahooapis.com/3.13.0/build/yui/yui-min.js"></script>
+</head>
+<body>
+<div  id="layout">
+    <div class="header">
+        <h1>Chat</h1>
+    </div>
+
+    <div class="content">
+        <pre class="snippet" data-language="html">
+        <code id="message_broad">
+        hihi<br/>
+        </code>
+        </pre>
+        <fieldset>
+             <input type="text" placeholder="message" id="new_message_input">
+        <button type="submit" class="pure-button pure-button-primary" id="enter_btn">Enter</button>
+        </fieldset>
+    </div>
+</div>
+</body>
+<script>
+
+YUI().use('node', 'yql', 'node-scroll-info','node-style', function(Y) {
+
+    Y.one("#enter_btn").on("click", function (e) {
+        new_message = Y.one("#new_message_input").get('value');
+        if (new_message) {
+              appendMessage(Y.one("#message_broad"), new_message);
+        }
+
+
+    });
+    function appendMessage(node, message) {
+        allMessage = node.getHTML();
+        allMessage = allMessage + "<br/>" + message;
+
+        node.setHTML(allMessage);
+
+    }
+}
+</script>
+</html>
+

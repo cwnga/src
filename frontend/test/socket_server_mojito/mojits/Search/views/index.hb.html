@@ -1,0 +1,454 @@
+
+<!DOCTYPE HTML>
+<html>
+<head>
+<script type="text/javascript">var MOJITO_INIT=new Date().getTime();</script>
+<meta name="creator" content="Yahoo! Mojito ">
+<meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+<title>Yahoo!奇摩服務+ 找房 | 找車 | 找旅遊 | 找服務</title>
+
+<style type="text/css">
+
+.yui3-sample-hidden {
+        display:none;
+    }
+
+#ycflexsearch {
+    -moz-transition: top ease-out 250ms;
+    -webkit-transition: top ease-out 250ms;
+    background: rgba(255,255,255,.9);
+    background-image: linear-gradient(bottom,rgba(240,240,240,1) 0%,rgba(255,255,255,1) 100%);
+    background-image: -o-linear-gradient(bottom,rgba(240,240,240,1) 0%,rgba(255,255,255,1) 100%);
+    background-image: -moz-linear-gradient(bottom,rgba(240,240,240,1) 0%,rgba(255,255,255,1) 100%);
+    background-image: -webkit-linear-gradient(bottom,rgba(240,240,240,1) 0%,rgba(255,255,255,1) 100%);
+    background-image: -ms-linear-gradient(bottom,rgba(240,240,240,1) 0%,rgba(255,255,255,1) 100%);
+    border: 1px solid #dfdfdf;
+    width:90%;
+    border-radius: 6px;
+    border-top: 0 none;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr='#ffffffff',endColorstr='#fff0f0f0');
+    padding: 15px 17px;
+    position: fixed;
+    top: -10px;
+    transition: top ease-out 250ms;
+    z-index: 3;
+}
+
+body {
+    background-color: #F8F8F8;
+    padding-left: 8px;
+}
+h1 {
+    text-shadow: -2px -2px 3px #FFF;
+}
+
+.trib h1 {
+    margin: 0px;
+    text-align: center;
+}
+
+div.mod{
+    background-color: #F9F9FC;
+    border: 1px solid #D4D8EB;
+    border-radius: 4px;
+    box-shadow: 0 0 6px rgba(0,0,0,0.15);
+    margin: 15px 8px;
+    xpadding-bottom: 1px;
+}
+
+div.mod h3 {
+    position: relative;
+    background-color: #E5E6F1;
+    border-radius: 4px 4px 0 0;
+    color: #5E6BA4;
+    font-weight: bold;
+    font-size: 1.1em;
+    margin: 0;
+    padding: 4px 7px 5px;
+}
+
+div.mod h3 strong {
+    font-weight: bold;
+    padding-left: 25px;
+    background-repeat: no-repeat;
+    background-position: 2px;
+}
+
+/** for each mojit, add a bgimage for logo **/
+
+
+div.mod h3 a.close,
+div.mod h3 a.min,
+div.mod h3 a.refresh {
+    background-color: #F9F9FC;
+    border:1px solid #E5E6F1;
+    color: #5E6BA4;
+    text-align: center;
+    display: block;
+    height: 19px;
+    width: 17px;
+    text-decoration: none;
+    font-weight: bold;
+    right: 4px;
+    top: 1px;
+    position: absolute;
+    font-size: 80%;
+    margin: 2px;
+    padding: 0;
+}
+div.mod h3 a.min {
+    right: 25px;
+}
+div.minned h3 a.min {
+    right: 25px;
+}
+div.mod h3 a.refresh {
+    right: 50px;
+}
+div.mod div.inner {
+    overflow: hidden;
+    xpadding-right: 8px;
+}
+div.inner ul {
+    margin: 0;
+    padding: 0;
+}
+
+div.inner ul li {
+    list-style-type: none;
+    margin: 0;
+    padding: 8px 4px;
+    border-top: 1px solid #ececec;
+}
+
+div.inner ul li a {
+    text-decoration: none;
+    color: #000;
+}
+
+div.inner ul li {
+    background: rgb(255,255,255); /* Old browsers */
+   background: -moz-linear-gradient(top,  rgba(255,255,255,1) 0%, rgba(241,241,241,1) 48%, rgba(225,225,225,1) 100%, rgba(246,246,246,1) 100%); /* FF3.6+ */
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(255,255,255,1)), color-stop(48%,rgba(241,241,241,1)), color-stop(100%,rgba(225,225,225,1)), color-stop(100%,rgba(246,246,246,1))); /* Chrome,Safari4+ */
+ background: -webkit-linear-gradient(top,  rgba(255,255,255,1) 0%,rgba(241,241,241,1) 48%,rgba(225,225,225,1) 100%,rgba(246,246,246,1) 100%); /* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(top,  rgba(255,255,255,1) 0%,rgba(241,241,241,1) 48%,rgba(225,225,225,1) 100%,rgba(246,246,246,1) 100%); /* Opera 11.10+ */
+                background: -ms-linear-gradient(top,  rgba(255,255,255,1) 0%,rgba(241,241,241,1) 48%,rgba(225,225,225,1) 100%,rgba(246,246,246,1) 100%); /* IE10+ */
+               background: linear-gradient(to bottom,  rgba(255,255,255,1) 0%,rgba(241,241,241,1) 48%,rgba(225,225,225,1) 100%,rgba(246,246,246,1) 100%); /* W3C */
+              filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#f6f6f6',GradientType=0 ); /* IE6-9 */
+         }
+
+         /** collapse module **/
+         div.mod.collapse div.inner {
+             display:none;
+         }
+
+         .myfooter {
+             clear: left;
+         }
+
+         .bodytext {
+             padding-left: 4px;
+         }
+
+         .galleryFlow {
+             position:relative;
+         }
+
+         .swap {
+             /*transform*/
+             -webkit-transform:scale(0.5,0.5);
+             -moz-transform:scale(0.5,0.5);
+             -ms-transform:scale(0.5,0.5);
+             -o-transform:scale(0.5,0.5);
+             transform:scale(0.5,0.5);
+             position: absolute;
+             top: 0px;
+             right: 0px;
+         }
+
+         dt { font-weight: bold; }
+         .sel { background-color: #FF4; }
+
+         #github h3 strong {
+             background-image: url(/static/Github/assets/favicon-github.png);
+         }
+
+         #calendar h3 strong {
+             background-image: url(/static/Calendar/assets/favicon-calendar.png);
+         }
+         #calendar .inner li {
+             white-space: nowrap;
+             text-overflow: ellipsis;
+             overflow: hidden;
+         }
+         #calendar .inner li span {
+             padding-right: 4px;
+             font-size: .8em;
+             display: inline-block;
+             width: 106px;
+             max-width: 7.6 em;
+             overflow: hidden;
+         }
+
+         #twitter h3 strong {
+             background-image: url(/static/Twitter/assets/favicon-twitter.png);
+         }
+         #blog li .desc {
+             display:block;
+             color: grey;
+             font-size: 0.8em;
+             text-overflow: ellipsis;
+             white-space: nowrap;
+             overflow: hidden;
+             margin-left: 4px;
+             margin-top: 4px;
+         }
+
+         #blog h3 strong {
+             background-image: url(/static/Blog/assets/favicon-blog.png);
+         }
+
+         #gallery h3 strong {
+             background-image: url(/static/Gallery/assets/favicon-blog.png);
+         }
+         </style>
+<!--search start-->
+<!--search end-->
+
+</head>
+
+<body>
+<div id="yui_3_9_1_2_1382866494837_17" class="mojit pageLayout trib" >
+        <div class="myheader" >
+        <div id="yui_3_9_1_2_1382866494837_8" class="mojit">
+            <h3></h3>
+        </div>
+    </div>
+    <div class="mybody" >
+    <!--input start-->
+    <div id="ycflexsearch" class="">
+        <img src="http://l.yimg.com/rz/d/yahoo_local_zh-Hant-TW_serviceplus_f_p_350x40_serviceplus.png">
+        <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.3.0/pure-min.css">
+        <input type="text" name="kw" id="kw">
+        <button id="search_btn" type="submit" class="pure-button pure-button-primary">Search</button>
+        </div>
+        <br/>
+        <br/>
+        <br/>
+    <!--input end-->
+
+
+        <div id="yui_3_9_1_2_1382866494837_16" class="mojit">
+            <h4 class="bodytext"></h4>
+            <div class="bodyStuff yui3-u-1">
+                <div id="yui_3_9_1_2_1382866494837_15" class="mojit">
+                </div>
+            </div>
+            </div>
+        <div id="search_result">
+        </div>
+
+        <div id="loading_img" class="yui3-sample-hidden" name="loading_img">
+        Loading<img src="http://l.yimg.com/f/i/tw/adpost/adpost/loading.gif" >
+
+        </div>
+        <div class="myfooter" >
+            <div id="yui_3_9_1_2_1382866494837_10" class="mojit">
+                <small>Copyright 2013 Yahoo! Inc.</small>
+            </div>
+        </div>
+    </div>
+</body>
+<!--search start-->
+<script src="http://yui.yahooapis.com/3.13.0/build/yui/yui-min.js"></script>
+<script>
+YUI().use('node', 'yql', 'node-scroll-info','node-style', function(Y) {
+    Y.namespace('serch_parameter').cp=1;//initial
+    Y.namespace('serch_parameter').moreResult = true;
+    var body = Y.one('body');
+
+    body.plug(Y.Plugin.ScrollInfo);
+    body.scrollInfo.on('scrollToBottom', function (e) {
+        // Load more content when the user scrolls to the bottom of the page.
+        Y.namespace('serch_parameter').cp = Y.namespace('serch_parameter').cp+1;
+        kw = Y.namespace('serch_parameter').kw;
+        cp  = Y.namespace('serch_parameter').cp;
+        searchWs(kw, cp);
+    });
+
+    function searchWs(kw, cp)
+    {
+
+        console.log(kw+','+cp);
+
+        if (kw) {
+            sql = 'select * from json where url="http://tw.serviceplus.yahoo.com/search/search_services?'
+            +'kw='+kw
+            +'&catid=&undedup=0&unspc=0&cata=&catb=&pricea=&priceb=&items=&areaa=tw&areab=&areac=&sort=3&total=3824&'
+            +'cp='+cp
+            +'&ppa=30&pa=10&type=srplist&vmode=0&action=srplistquery"';
+            showLoadingImg(Y);
+            var q = Y.YQL(sql, {
+                //Tell JSONP to not cache this request so we get new images on each request
+                allowCache: false,
+                on: {
+                    success: function(r) {
+                        hiddenLoadingImg(Y);
+                        if (r.query && r.query.results) {
+                            if (r.query.results.json.data instanceof Array) {
+                                //console.log(r.query.results.json.data);
+                                hiddenLoadingImg(Y);
+                                handleSearchResult(
+                                    Y.one("#search_result"),
+                                    r.query.results.json.data
+                                );
+                            } else {
+                                setNoMoreResultFlagAndHtml( Y.one("#search_result"));
+
+                            }
+                        }
+                    }
+                }
+            });
+            q.send;
+            //Y.later(8000, q, q.send, null, true);
+        }
+    }
+
+    Y.one("#search_btn").on("click", function (e) {
+        kw = Y.one("#kw").get('value');
+        Y.namespace('serch_parameter').moreResult = true;
+        if (kw) {
+            showLoadingImg(Y);
+
+            resetSearchResult(Y.one("#search_result"));///reset
+            Y.namespace('serch_parameter').kw = kw;
+            cp = Y.namespace('serch_parameter').cp = 1;
+            searchWs(kw, cp);
+
+        }
+
+    });
+    function showLoadingImg(Y)
+    {
+        node = Y.one("#loading_img");
+
+        if (node) {
+
+            console.log("showLoadingImg:: OK");
+            node.removeClass('yui3-sample-hidden');
+        } else {
+            console.log("showLoadingImg:: fail");
+
+        }
+    }
+    function hiddenLoadingImg(Y)
+    {
+
+        node = Y.one("#loading_img");
+        if (node) {
+
+            console.log("hiddenLoadingImg:OK");
+            node.addClass('yui3-sample-hidden');
+        } else {
+            console.log("hiddenLoadingImg:fail");
+        }
+    }
+    function setNoMoreResultFlagAndHtml(node)
+    {
+        if ( Y.namespace('serch_parameter').moreResult == true) {
+            allResult = node.getHTML();
+            allResult = allResult + '<div class="mod" id="blog"><h3><strong>No more result</strong></h3></div>';
+            node.setHTML(allResult);
+        }
+        Y.namespace('serch_parameter').moreResult = false;
+    }
+
+    function resetSearchResult(node)
+    {
+        node.setHTML('');
+
+    }
+    function handleSearchResult(node, searchResult)
+    {
+        allResult = node.getHTML();
+        newResult = '';
+
+        for (var key in searchResult){
+            if (key != "0") {
+                boothLink = searchResult[key].link;
+                sellerName = searchResult[key].poster;
+                itemLink = searchResult[key].mlink;
+                img = searchResult[key].img;
+                itemTitle = searchResult[key].title;
+                price = searchResult[key].price;
+                address = searchResult[key].location;
+                newResult = newResult+ genItemHtml(boothLink, sellerName , itemLink, img, itemTitle, price, address);
+            }
+        }
+        allResult = allResult+newResult;
+        node.setHTML(allResult);
+    }
+    function genItemHtml(boothLink, sellerName, itemLink, itemImg, itemTitle, price, address)
+    {
+        /*
+         ad_map_display: "on"
+         ad_summary: "KEY GO全車車門自動吸門裝置3D 影像環景.電熱記憶跑車椅/電尾門頂級配備.黑.白現車多部"
+         advv: "1"
+         desc: "KEY GO全車車門自動吸門裝置3D 影像環景.電熱記憶跑車椅/電尾門頂級配備.黑.白現車多部"
+         h: "120"
+         img: "http://nevec.yimg.com/tw_ec00-0/d6/a8/m1/0000247311480-2162.jpg"
+         lat: "25.047726"
+         link: "http://tw.serviceplus.yahoo.com/booth/seller/Y5293877552"
+         lng: "121.4358"
+         location: "臺灣新北市泰山區中山路二段187之3號"
+         mid: "000014635737"
+         mlink: "http://tw.serviceplus.yahoo.com/item/detail/000014635737"
+         olink: ""
+         poster: "廣碩國際汽車"
+         price: "1"
+         promobg: "0"
+         promokit: "0"
+         ptype: "0"
+         tag: "-1"
+         title: "BMW 535 現車多部228萬起 廣碩國際535i"
+         utime: "2013/10/25 16:43"
+         w: "160"
+         */
+
+        var itemHtml =
+        '<div class="mod" id="blog">'
+        +"\n"+'<h3>'
+        +"\n"+'<strong>'+itemTitle+'</strong>'
+        +"\n"+'<a title="minimize module" class="min" href="#">-</a>'
+        +"\n"+'<a title="close module" class="close" href="#">x</a>'
+        +"\n"+'</h3>'
+        +"\n"+'<div class="inner">'
+        +"\n"+'<ul>'
+        +"\n"+'<li>'
+        +"\n"+'<strong>'
+        +"\n"+'<a href="'+boothLink+'">'+sellerName+'</a><br>'
+        +"\n"+'<a href="'+itemLink+'">'
+        +"\n"+'<img src="'+itemImg+'" alt="'+itemTitle+'">'
+        +"\n"+'</a><br>'
+        +"\n"+'</strong><br>'
+        +"\n"+'<span>價格：'+price+'元</span><br>'
+        +"\n"+'<span>地區：'+address+'</span><br>'
+        +"\n"+'</li>'
+        +"\n"+'</ul>'
+        +"\n"+'</div>'
+        +"\n"+'</div>';
+        return itemHtml;
+    }
+
+});
+</script>
+
+
+<!--search end-->
+
+
+</html>
+

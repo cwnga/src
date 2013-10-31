@@ -1,0 +1,100 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<script type="text/javascript">var MOJITO_INIT=new Date().getTime();</script>
+<meta name="creator" content="Yahoo! Mojito ">
+<meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+<title>Yahoo!奇摩服務+ 找房 | 找車 | 找旅遊 | 找服務</title>
+<link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.3.0/pure-min.css">
+<link rel="stylesheet" href="http://purecss.io/combo/1.6.5?/css/main.css&/css/grids.css&/css/rainbow/baby-blue.css">
+
+
+
+</head>
+
+<script src="http://yui.yahooapis.com/3.13.0/build/yui/yui-min.js"></script>
+
+<script src="/static/Chat/assets/socket.io.js"></script>
+
+<body>
+<div  id="layout">
+    <div class="header">
+        <h1>Chat</h1>
+    </div>
+
+    <div class="content">
+    <div style="height:120px;width:100%;border:1px solid #ccc;font:16px/26px Georgia, Garamond, Serif;overflow:auto;" id="message_frame">
+     <pre class="snippet" data-language="html">
+        <code id="message_broad">
+        </code>
+
+    </div>
+    <input type="text" placeholder="message" id="new_message_input">
+    <button type="submit" class="pure-button pure-button-primary" id="enter_btn">Enter</button>
+    </div>
+</div>
+
+</body>
+<script>
+YUI(
+    {
+            //Last Gallery Build of this module
+                gallery: 'gallery-2011.03.11-23-49'
+            }
+
+            ).use('gallery-scroll-nav','node', 'yql', 'node-scroll-info','node-style', function(Y) {
+
+                var socket = io.connect('http://localhost:8081');
+                Y.namespace('socket').socket = socket;
+                function emit()
+                {
+                    Y.namespace('socket').socket.emit('my other event', { my: 'data' });
+
+                }
+
+
+
+    enter_btn_node = Y.one("#enter_btn");
+    if (enter_btn_node) {
+        enter_btn_node.on("click", function (e) {
+            new_message = Y.one("#new_message_input").get('value');
+            if (new_message) {
+                appendMessage(Y.one("#message_broad"), new_message);
+            }
+
+
+            if (Y.one("#message_frame")) {
+                node =Y.one("#message_frame");
+                emit();
+                autoToButtom(node);
+            }
+
+       });
+    }
+    function autoToButtom(node)
+    {
+        node.set('scrollTop',node.get('scrollHeight'));
+    }
+
+    function appendMessage(node, message) {
+        allMessage = node.getHTML();
+        allMessage = allMessage + "<br/>" + message;
+        node.setHTML(allMessage);
+
+    }
+});
+</script>
+
+<script>
+var socket = io.connect('http://localhost:8081');
+socket.on('news', function (data) {
+    console.log(data);
+    socket.emit('my other event', { my: 'data' });
+});
+</script>
+
+
+
+
+</html>
+
