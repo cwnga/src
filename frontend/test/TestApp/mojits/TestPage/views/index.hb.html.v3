@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <meta http-equiv="X-UA-Compatible" content="IE=7; IE=EmulateIE9; IE=10" />
+        <base href="http://developer.here.com/apiexplorer/examples/api-for-js/places-search/search-by-address.html" />
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+        <title>Nokia Maps API for JavaScript Example: Search by address</title>
+        <meta name="description" content="Search by address."/>
+        <meta name="keywords" content="search, services, places, geocode, geocoding, geocoder"/>
+        <!-- For scaling content for mobile devices, setting the viewport to the width of the device-->
+        <meta name=viewport content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+        <!-- Styling for example container (NoteContainer & Logger)  -->
+        <link rel="stylesheet" type="text/css" href="http://developer.here.com/apiexplorer/examples/templates/js/exampleHelpers.css"/>
+        <!-- By default we add ?with=all to load every package available, it's better to change this parameter to your use case. Options ?with=maps|positioning|places|placesdata|directions|datarendering|all -->
+        <script type="text/javascript" charset="UTF-8" src="http://js.cit.api.here.com/se/2.5.3/jsl.js?with=all"></script>
+        <!-- JavaScript for example container (NoteContainer & Logger)  -->
+        <script type="text/javascript" charset="UTF-8" src="http://developer.here.com/apiexplorer/examples/templates/js/exampleHelpers.js"></script>
+
+
+
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Fully customizable and responsive CSS grids.">
+
+ <title>Grids – Pure</title>
+<link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.3.0/pure-min.css">
+<link rel="stylesheet" href="http://purecss.io/combo/1.6.6?/css/main.css&/css/grids.css&/css/rainbow/baby-blue.css">
+<link type="text/css" rel="stylesheet" href="chrome-extension://cpngackimfmofbokmjmljamhdncknpmg/style.css"><script type="text/javascript" charset="utf-8" src="chrome-extension://cpngackimfmofbokmjmljamhdncknpmg/page_context.js"></script><style>[touch-action="none"]{ -ms-touch-action: none; touch-action: none; }[touch-action="pan-x"]{ -ms-touch-action: pan-x; touch-action: pan-x; }[touch-action="pan-y"]{ -ms-touch-action: pan-y; touch-action: pan-y; }[touch-action="scroll"],[touch-action="pan-x pan-y"],[touch-action="pan-y pan-x"]{ -ms-touch-action: pan-x pan-y; touch-action: pan-x pan-y; }</style>
+
+
+
+
+
+<link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.3.0/grids-min.css">
+<script src="http://yui.yahooapis.com/3.13.0/build/yui/yui-min.js"></script>
+<script>
+YUI().use('node', 'yql', 'node-scroll-info','node-style', function(Y) {
+
+    Y.namespace('ITEM_DETAIL').item_detail={};
+    Y.namespace('ITEM_DETAIL').item_detail.model = {
+        mid: 0,
+        price: 0,       //0
+        address: "",    //1
+        pulish_time: "",//2
+        modify_time: "",//3
+        close_time: "", //4
+        ref_url:  "",   //5
+        img: "",
+
+        li_seq:[
+            "price",
+            "address",
+            "pulish_time",
+            "modify_time",
+            "close_time",
+            "ref_url"
+            ],
+
+            getimage_by_mid: function (mid, callback) {
+                sql = 'select * from html where url="http://tw.serviceplus.yahoo.com/item/detail/'+mid+'" and xpath="/html/body/div/div[2]/div/div[2]/div[2]/div/div[2]/ul/li/div/img"';
+                var q = Y.YQL(sql, {
+                    //Tell JSONP to not cache this request so we get new images on each request
+                    allowCache: true,
+                    on: {
+                        success: function(r) {
+                            img_src =  r.query.results.img.src;
+                            Y.namespace('ITEM_DETAIL').item_detail.model.img = img_src;
+                            callback(r);
+
+                        }
+
+                    }
+                });
+                q.send;
+            },
+
+
+            get_by_mid: function (mid, callback) {
+                Y.namespace('ITEM_DETAIL').item_detail.model.mid = mid;
+
+                sql = "select * from html where url=\"http://tw.serviceplus.yahoo.com/item/detail/"+mid+"\" and xpath=\"//li[@id='iteminfos']\"";
+                var q = Y.YQL(sql, {
+                    //Tell JSONP to not cache this request so we get new images on each request
+                    allowCache: true,
+                    on: {
+                        success: function(r) {
+                            li  =  r.query.results.li.ul.li;
+                            li_seq = (Y.namespace('ITEM_DETAIL').item_detail.model.li_seq);
+
+                            for (i in li) {
+                                if (li[i].div!=undefined && li[i].div[1] != undefined ) {
+                                    item_column_info = li[i].div[1];
+                                    if (i == 0) {
+                                        Y.namespace('ITEM_DETAIL').item_detail.model[li_seq[i]] = item_column_info.em.content;
+                                    } else {
+                                        Y.namespace('ITEM_DETAIL').item_detail.model[li_seq[i]] = item_column_info.em;
+                                    }
+                                }
+                            }
+                            callback(r);
+                        }
+
+                    }
+                });
+                q.send;
+            }
+
+        };
+
+        Y.namespace('ITEM_DETAIL').item_detail.model.get_by_mid('000014745079', function (a) {
+
+            Y.namespace('ITEM_DETAIL').item_detail.model.getimage_by_mid('000014745079', function(r){
+                console.log(Y.namespace('ITEM_DETAIL').item_detail.model);
+
+            });
+        });
+    });
+
+</script>
+</head>
+<body>
+<div id="header" >
+
+</div>
+
+<div class="pure-g">
+    <div class="pure-u-1 center">
+    <img src="http://nevec.yimg.com/tw_ec00-0/cf/a4/m3/0000251746270-7059.jpg">
+    </div>
+    <div class="pure-u-1-3">物件編號</div>
+    <div class="pure-u-1-3">087654321</div>
+    <div class="pure-u-1-3"></div>
+
+    <div class="pure-u-1-3">$</div>
+    <div class="pure-u-1-3">1100000</div>
+    <div class="pure-u-1-3"></div>
+
+    <div class="pure-u-1-3">地址</div>
+    <div class="pure-u-1-3">taipei</div>
+
+    <div class="pure-u-1-3"></div>
+
+    <div class="pure-u-1-3">刊登時間</div>
+    <div class="pure-u-1-3">2013-12-12</div>
+    <div class="pure-u-1-3"></div>
+    <div class="pure-u-1-3">修改時間</div>
+    <div class="pure-u-1-3">2013-12-12</div>
+    <div class="pure-u-1-3"></div>
+    <div class="pure-u-1-3">結束時間</div>
+    <div class="pure-u-1-3">2013-12-12</div>
+    <div class="pure-u-1-3"></div>
+    <div class="pure-u-1-3">參考網址</div>
+    <div class="pure-u-1-3">http://</div>
+    <div class="pure-u-1-3"></div>
+
+
+
+
+</div>
+
+
+
+<div class="pure-g">
+<div class="pure-u-1-2" id="mapContainer"></div>
+</div>
+
+
+        <div class="pure-g" id="uiContainer"></div>
+        <script type="text/javascript" id="exampleJsSource">
+/*  Setup authentication app_id and app_code
+*   WARNING: this is a demo-only key
+*   please register for an Evaluation, Base or Commercial key for use in your app.
+*   Just visit http://developer.here.com/get-started for more details. Thank you!
+*/
+nokia.Settings.set("app_id", "DemoAppId01082013GAL");
+nokia.Settings.set("app_code", "AJKnXv84fjrb0KIHawS0Tg");
+// Use staging environment (remove the line for production environment)
+nokia.Settings.set("serviceMode", "cit");
+
+nokia.Settings.set("defaultLanguage", "zh_CN");
+
+
+// Get the DOM node to which we will append the map
+var mapContainer = document.getElementById("mapContainer");
+// Create a map inside the map container DOM node
+var map = new nokia.maps.map.Display(mapContainer, {
+    // Initial center and zoom level of the map
+    center: [52.51, 13.4],
+    zoomLevel: 20,
+    components: [
+        new nokia.maps.map.component.Behavior()
+    ]
+});
+
+var searchCenter = new nokia.maps.geo.Coordinate(52.51, 13.4),
+    searchManager = nokia.places.search.manager,
+    resultSet;
+
+// Function for receiving search results from places search and process them
+var processResults = function (data, requestStatus, requestId) {
+    var i, len, locations, marker;
+
+    if (requestStatus == "OK") {
+        // The function findPlaces() and reverseGeoCode() of  return results in slightly different formats
+        locations = data.results ? data.results.items : [data.location];
+        // We check that at least one location has been found
+        if (locations.length > 0) {
+            // Remove results from previous search from the map
+            if (resultSet) map.objects.remove(resultSet);
+            // Convert all found locations into a set of markers
+            resultSet = new nokia.maps.map.Container();
+            for (i = 0, len = locations.length; i < len; i++) {
+                marker = new nokia.maps.map.StandardMarker(locations[i].position, { text: i+1 });
+                resultSet.objects.add(marker);
+            }
+            // Next we add the marker(s) to the map's object collection so they will be rendered onto the map
+            map.objects.add(resultSet);
+            // We zoom the map to a view that encapsulates all the markers into map's viewport
+            map.zoomTo(resultSet.getBoundingBox(), false);
+        } else {
+            alert("Your search produced no results!");
+        }
+    } else {
+        alert("The search request failed");
+    }
+};
+
+/* We create a UI notecontainer for example description and controls
+ * NoteContainer is a UI helper function and not part of the Nokia Maps API
+ * See exampleHelpers.js for implementation details
+ */
+var noteContainer = new NoteContainer({
+    id: "searchUi",
+    parent: document.getElementById("uiContainer"),
+    title: "Result",
+    content:
+        '<small id="progress"></small>'
+});
+
+/* We perform a geocode search request: translating a given address
+ * into a geolocation
+ */
+var searchTerm = "台北101";
+
+// Binding of DOM elements to several variables so we can install event handlers.
+var progressUiElt = document.getElementById("progress");
+
+progressUiElt.innerHTML = "Looking for '" + searchTerm+ "'...";
+
+/* Once the map is initialized and ready (an event that is fired only once),
+ * trigger a geocoding request.
+ */
+map.addListener("displayready", function () {
+    searchManager.geoCode({
+        searchTerm: searchTerm,
+        onComplete: processResults
+    });
+});
+        </script>
+
+</body>
+
+
+</html>

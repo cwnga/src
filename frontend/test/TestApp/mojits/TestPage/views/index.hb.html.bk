@@ -1,0 +1,186 @@
+<head>
+<head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Fully customizable and responsive CSS grids.">
+
+ <title>Grids – Pure</title>
+<link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.3.0/pure-min.css">
+<link rel="stylesheet" href="http://purecss.io/combo/1.6.6?/css/main.css&/css/grids.css&/css/rainbow/baby-blue.css">
+<link type="text/css" rel="stylesheet" href="chrome-extension://cpngackimfmofbokmjmljamhdncknpmg/style.css"><script type="text/javascript" charset="utf-8" src="chrome-extension://cpngackimfmofbokmjmljamhdncknpmg/page_context.js"></script><style>[touch-action="none"]{ -ms-touch-action: none; touch-action: none; }[touch-action="pan-x"]{ -ms-touch-action: pan-x; touch-action: pan-x; }[touch-action="pan-y"]{ -ms-touch-action: pan-y; touch-action: pan-y; }[touch-action="scroll"],[touch-action="pan-x pan-y"],[touch-action="pan-y pan-x"]{ -ms-touch-action: pan-x pan-y; touch-action: pan-x pan-y; }</style>
+
+
+
+
+
+<link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.3.0/grids-min.css">
+<script src="http://yui.yahooapis.com/3.13.0/build/yui/yui-min.js"></script>
+<script>
+YUI().use('node', 'yql', 'node-scroll-info','node-style', function(Y) {
+
+    Y.namespace('ITEM_DETAIL').item_detail={};
+    Y.namespace('ITEM_DETAIL').item_detail.model = {
+        mid: 0,
+        price: 0,       //0
+        address: "",    //1
+        pulish_time: "",//2
+        modify_time: "",//3
+        close_time: "", //4
+        ref_url:  "",   //5
+        img: "",
+
+        li_seq:[
+            "price",
+            "address",
+            "pulish_time",
+            "modify_time",
+            "close_time",
+            "ref_url"
+            ],
+
+            getimage_by_mid: function (mid, callback) {
+                sql = 'select * from html where url="http://tw.serviceplus.yahoo.com/item/detail/'+mid+'" and xpath="/html/body/div/div[2]/div/div[2]/div[2]/div/div[2]/ul/li/div/img"';
+                var q = Y.YQL(sql, {
+                    //Tell JSONP to not cache this request so we get new images on each request
+                    allowCache: true,
+                    on: {
+                        success: function(r) {
+                            img_src =  r.query.results.img.src;
+                            Y.namespace('ITEM_DETAIL').item_detail.model.img = img_src;
+                            callback(r);
+
+                        }
+
+                    }
+                });
+                q.send;
+            },
+
+
+            get_by_mid: function (mid, callback) {
+                Y.namespace('ITEM_DETAIL').item_detail.model.mid = mid;
+
+                sql = "select * from html where url=\"http://tw.serviceplus.yahoo.com/item/detail/"+mid+"\" and xpath=\"//li[@id='iteminfos']\"";
+                var q = Y.YQL(sql, {
+                    //Tell JSONP to not cache this request so we get new images on each request
+                    allowCache: true,
+                    on: {
+                        success: function(r) {
+                            li  =  r.query.results.li.ul.li;
+                            li_seq = (Y.namespace('ITEM_DETAIL').item_detail.model.li_seq);
+
+                            for (i in li) {
+                                if (li[i].div!=undefined && li[i].div[1] != undefined ) {
+                                    item_column_info = li[i].div[1];
+                                    if (i == 0) {
+                                        Y.namespace('ITEM_DETAIL').item_detail.model[li_seq[i]] = item_column_info.em.content;
+                                    } else {
+                                        Y.namespace('ITEM_DETAIL').item_detail.model[li_seq[i]] = item_column_info.em;
+                                    }
+                                }
+                            }
+                            callback(r);
+                        }
+
+                    }
+                });
+                q.send;
+            }
+
+        };
+
+        Y.namespace('ITEM_DETAIL').item_detail.model.get_by_mid('000014745079', function (a) {
+
+            Y.namespace('ITEM_DETAIL').item_detail.model.getimage_by_mid('000014745079', function(r){
+                console.log(Y.namespace('ITEM_DETAIL').item_detail.model);
+
+            });
+        });
+    });
+
+</script>
+</head>
+
+<body>
+<div id="item_info" class="pure-g-r">
+
+    <div class="pure-u-1 l-centered">
+        <img src="http://24.media.tumblr.com/31f24c22894d6d46a7b6f4b0687db9cd/tumblr_mnh0uemhCk1st5lhmo1_1280.jpg" alt="Sample image of a meeting for a responsive image example.">
+    </div>
+
+
+    <div id = "mid"></div>
+    <div id = "price"></div>
+    <div id = "address"></div>
+    <div id = "pulish_time"></div>
+    <div id = "modify_time"></div>
+    <div id = "close_time"></div>
+    <div id = "ref_url"></div>
+    <div id = "img"></div>
+</div>
+
+
+<div class="pure-g-r grid-example">
+    <div class="pure-u-1-2">
+        <div class="l-box">
+            <h3>Fast</h3>
+            <p>
+                YUI's lightweight core and modular architecture make it scalable, fast, and robust. Built by frontend engineers at Yahoo!, YUI powers the most popular websites in the world.
+            </p>
+        </div>
+    </div>
+
+    <div class="pure-u-1-2">
+        <div class="l-box">
+            <h3>Complete</h3>
+            <p>
+                YUI's intuitive and well-documented API takes you from basic DOM handling to building performant and maintainable applications on desktop browsers, mobile devices, and servers.
+            </p>
+        </div>
+    </div>
+
+    <div class="pure-u-1-2">
+        <div class="l-box">
+            <h3>Industrial Strength</h3>
+            <p>
+                A thriving community, a carefully architected infrastructure, and a comprehensive suite of tools help you code like a pro, from simple web pages to complex web applications.
+            </p>
+        </div>
+    </div>
+
+    <div class="pure-u-1-2">
+        <div class="l-box">
+            <h3>Free and Open</h3>
+            <p>
+                YUI is free for all uses and is developed in the open on GitHub. Core team members can always be found in the forums and the #yui IRC channel on Freenode. Pull requests welcome!
+            </p>
+        </div>
+    </div>
+
+    <div class="pure-u-1 l-centered">
+        <img src="http://24.media.tumblr.com/31f24c22894d6d46a7b6f4b0687db9cd/tumblr_mnh0uemhCk1st5lhmo1_1280.jpg" alt="Sample image of a meeting for a responsive image example.">
+    </div>
+
+    <div class="pure-u-2-5">
+        <div class="l-box">
+            <h3>Two-Fifth Column</h3>
+            <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur fermentum dui turpis.
+            </p>
+        </div>
+    </div>
+
+    <div class="pure-u-3-5">
+        <div class="l-box">
+            <h3>Three-Fifth Column</h3>
+            <p>
+                Quisque ac magna eget est porta varius ut eget quam. Curabitur tincidunt gravida nisl.
+            </p>
+
+            <p>
+                Fusce accumsan, sem vitae tempus tempor, nulla lectus interdum felis, eget molestie urna mauris vel elit. Curabitur vel ipsum nulla.
+            </p>
+        </div>
+    </div>
+</div>
+</body>

@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Fully customizable and responsive CSS grids.">
+
+<title>Grids – Pure</title>
+<link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.3.0/pure-min.css">
+<link rel="stylesheet" href="http://purecss.io/combo/1.6.6?/css/main.css&/css/grids.css&/css/rainbow/baby-blue.css">
+<link type="text/css" rel="stylesheet" href="chrome-extension://cpngackimfmofbokmjmljamhdncknpmg/style.css"><script type="text/javascript" charset="utf-8" src="chrome-extension://cpngackimfmofbokmjmljamhdncknpmg/page_context.js"></script><style>[touch-action="none"]{ -ms-touch-action: none; touch-action: none; }[touch-action="pan-x"]{ -ms-touch-action: pan-x; touch-action: pan-x; }[touch-action="pan-y"]{ -ms-touch-action: pan-y; touch-action: pan-y; }[touch-action="scroll"],[touch-action="pan-x pan-y"],[touch-action="pan-y pan-x"]{ -ms-touch-action: pan-x pan-y; touch-action: pan-x pan-y; }</style>
+
+
+
+<link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.3.0/grids-min.css">
+<script src="http://yui.yahooapis.com/3.13.0/build/yui/yui-min.js"></script>
+
+<script>
+YUI.add('item_detail_module', function (Y) {
+ Y.namespace('ITEM_DETAIL').item_detail={};
+ Y.namespace('ITEM_DETAIL').item_detail.model = {
+        data: {
+        mid: 0,
+        price: 0,       //0
+        address: "",    //1
+        pulish_time: "",//2
+        modify_time: "",//3
+        close_time: "", //4
+        ref_url:  "",   //5
+        img: ""
+    },
+
+        li_seq:[
+            "price",
+            "address",
+            "pulish_time",
+            "modify_time",
+            "close_time",
+            "ref_url"
+        ],
+
+        get_image_by_mid: function (mid, callback) {
+            sql = 'select * from html where url="http://tw.serviceplus.yahoo.com/item/detail/'+mid+'" and xpath="/html/body/div/div[2]/div/div[2]/div[2]/div/div[2]/ul/li/div/img"';
+            var q = Y.YQL(sql, {
+                //Tell JSONP to not cache this request so we get new images on each request
+                allowCache: true,
+                on: {
+                    success: function(r) {
+                        img_src =  r.query.results.img.src;
+                        Y.namespace('ITEM_DETAIL').item_detail.model.img = img_src;
+                        callback(r);
+
+                    }
+
+                }
+            });
+            q.send;
+        },
+        get: function(mid, callback) {
+            Y.namespace('ITEM_DETAIL').item_detail.model.data.mid = mid;
+
+            Y.namespace('ITEM_DETAIL').item_detail.model.get_info_by_mid(mid, function() {
+                 Y.namespace('ITEM_DETAIL').item_detail.model.get_image_by_mid(mid, callback);
+            });
+        },
+
+        get_info_by_mid: function (mid, callback) {
+            Y.namespace('ITEM_DETAIL').item_detail.model.mid = mid;
+
+            sql = "select * from html where url=\"http://tw.serviceplus.yahoo.com/item/detail/"+mid+"\" and xpath=\"//li[@id='iteminfos']\"";
+            var q = Y.YQL(sql, {
+                //Tell JSONP to not cache this request so we get new images on each request
+                allowCache: true,
+                on: {
+                    success: function(r) {
+                        li  =  r.query.results.li.ul.li;
+                        li_seq = (Y.namespace('ITEM_DETAIL').item_detail.model.li_seq);
+
+                        for (i in li) {
+                            if (li[i].div!=undefined && li[i].div[1] != undefined ) {
+                                item_column_info = li[i].div[1];
+                                if (i == 0) {
+                                    Y.namespace('ITEM_DETAIL').item_detail.model.data[li_seq[i]] = item_column_info.em.content;
+                                } else {
+                                    Y.namespace('ITEM_DETAIL').item_detail.model.data[li_seq[i]] = item_column_info.em;
+                                }
+                            }
+                        }
+                        callback(r);
+                    }
+
+                }
+            });
+            q.send;
+        }
+
+    };
+
+
+}, '0.0.1', {
+    requires: ['node', 'yql']
+});
+
+YUI().use('item_detail_module','querystring-parse', function(Y) {
+    var url= window.location.href;
+    function urlgetparameter(name) {
+        name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
+        var regexS = "[\\?&]" + name + "=([^&#]*)";
+        var regex = new RegExp(regexS);
+        var results = regex.exec(window.location.href);
+        if (results == null) return "";
+        else return results[1];
+    }
+
+    console.log(url);
+
+
+
+if (url) {
+    mid = urlgetparameter('mid');
+
+Y.namespace('ITEM_DETAIL').item_detail.model.get(mid, function (r) {
+
+        console.log( Y.namespace('ITEM_DETAIL').item_detail.model.data);
+        data = Y.namespace('ITEM_DETAIL').item_detail.model.data;
+        for (i in data) {
+            setNodeHtml(i, data[i]);
+        }
+        function setNodeHtml(id, value)
+        {
+            node = Y.one("#"+id);
+            if (node && value) {
+                node.setHTML(value);
+            }
+        }
+
+    });
+}
+});
+
+
+</script>
+</head>
+<body>
+<div id="header" >
+
+</div>
+
+<div class="pure-g">
+<div class="pure-u-1 center">
+<img id="item_main_img" src="http://nevec.yimg.com/tw_ec00-0/cf/a4/m3/0000251746270-7059.jpg">
+</div>
+<div class="pure-u-1-3">物件編號</div>
+<div class="pure-u-1-3" id="mid">--</div>
+<div class="pure-u-1-3"></div>
+
+<div class="pure-u-1-3">價格$</div>
+<div class="pure-u-1-3" id="price">--</div>
+<div class="pure-u-1-3"></div>
+
+<div class="pure-u-1-3">地址</div>
+<div class="pure-u-1-3" id="address">--</div>
+
+<div class="pure-u-1-3"></div>
+
+<div class="pure-u-1-3">刊登時間</div>
+<div class="pure-u-1-3" id="pulish_time">--</div>
+<div class="pure-u-1-3"></div>
+<div class="pure-u-1-3">修改時間</div>
+<div class="pure-u-1-3" id="modify_time">--</div>
+<div class="pure-u-1-3"></div>
+<div class="pure-u-1-3">結束時間</div>
+<div class="pure-u-1-3" id="close_time">--</div>
+<div class="pure-u-1-3"></div>
+<div class="pure-u-1-3">參考網址</div>
+<div class="pure-u-1-3" id="ref_url">--</div>
+<div class="pure-u-1-3"></div>
+
+
+
+
+</div>
+
+</body>
+
+
+</html>

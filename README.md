@@ -6,6 +6,11 @@ mojito@0.7.5
 mojito-cli@0.1.2
 //registry.npmjs.org/nodemon/-/nodemon-0.7.10.tgz
 ==============================================================================
+README log:
+2013-11-10
+add TestApp, mobile/ItemDetail
+==============================================================================
+
 dir:
 frontend/test/01_mojito_cli_basics/
 
