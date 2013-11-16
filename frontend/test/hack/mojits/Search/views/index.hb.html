@@ -1,0 +1,435 @@
+
+<link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.3.0/pure-min.css">
+<style>
+body {
+
+}
+.show_img_small {
+    width: 10%;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 15px;
+    margin-bottom: 5px;
+}
+
+
+
+#wrapper {
+    width: 90%;
+    max-width: 1100px;
+    min-width: 800px;
+    margin: 50px auto;
+}
+
+#columns {
+    -webkit-column-count: 3;
+    -webkit-column-gap: 10px;
+    -webkit-column-fill: auto;
+    -moz-column-count: 3;
+    -moz-column-gap: 10px;
+    -moz-column-fill: auto;
+    column-count: 3;
+    column-gap: 15px;
+    column-fill: auto;
+}
+.yui3-widget-mask{
+background-color: black;
+zoom: 1;
+-ms-filter: "alpha(opacity=40)";
+filter: alpha(opacity=40);
+opacity: .8;
+
+}
+#blackground{
+}
+
+
+.yui3-panel-content{
+background: #000000;
+}
+
+.pin {
+    display: inline-block;
+    background: #FEFEFE;
+    border: 2px solid #FAFAFA;
+    box-shadow: 0 1px 2px rgba(34, 25, 25, 0.4);
+    margin: 0 2px 15px;
+    -webkit-column-break-inside: avoid;
+    -moz-column-break-inside: avoid;
+    column-break-inside: avoid;
+    padding: 15px;
+    padding-bottom: 5px;
+    background: -webkit-linear-gradient(45deg, #FFF, #F9F9F9);
+    opacity: 1;
+
+    -webkit-transition: all .2s ease;
+    -moz-transition: all .2s ease;
+    -o-transition: all .2s ease;
+    transition: all .2s ease;
+}
+
+.pin img {
+    width: 100%;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 15px;
+    margin-bottom: 5px;
+}
+
+.pin p {
+    font: 12px/18px Arial, sans-serif;
+    color: #333;
+    margin: 0;
+}
+@media (min-width: 200px) {
+    #columns {
+        -webkit-column-count: 1;
+        -moz-column-count: 1;
+        column-count: 1;
+    }
+}
+
+@media (min-width: 960px) {
+    #columns {
+        -webkit-column-count: 4;
+        -moz-column-count: 4;
+        column-count: 4;
+    }
+}
+
+@media (min-width: 1100px) {
+    #columns {
+        -webkit-column-count: 5;
+        -moz-column-count: 5;
+        column-count: 5;
+    }
+}
+
+#columns:hover .pin:not(:hover) {
+    opacity: 0.4;
+}
+
+.yui3-sample-hidden {
+        display:none;
+    }
+#ycflexsearch {
+    -moz-transition: top ease-out 250ms;
+    -webkit-transition: top ease-out 250ms;
+    background: rgba(255,255,255,.9);
+    background-image: linear-gradient(bottom,rgba(240,240,240,1) 0%,rgba(255,255,255,1) 100%);
+    background-image: -o-linear-gradient(bottom,rgba(240,240,240,1) 0%,rgba(255,255,255,1) 100%);
+    background-image: -moz-linear-gradient(bottom,rgba(240,240,240,1) 0%,rgba(255,255,255,1) 100%);
+    background-image: -webkit-linear-gradient(bottom,rgba(240,240,240,1) 0%,rgba(255,255,255,1) 100%);
+    background-image: -ms-linear-gradient(bottom,rgba(240,240,240,1) 0%,rgba(255,255,255,1) 100%);
+    border: 1px solid #dfdfdf;
+    width:90%;
+    border-radius: 6px;
+    border-top: 0 none;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr='#ffffffff',endColorstr='#fff0f0f0');
+    padding: 15px 17px;
+    position: fixed;
+    top: -10px;
+    transition: top ease-out 250ms;
+    z-index: 3;
+}
+
+.pure-g > div {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+.l-box {
+
+font-family: Consolas, 'Liberation Mono', Courier, monospace;
+color: #333;
+background: rgb(250, 250, 250);
+}
+
+
+
+
+</style>
+
+    <!--input start-->
+    <div id="ycflexsearch" class="">
+        <img src="http://www.underconsideration.com/brandnew/archives/yahoo_logo_detail.png" width="100px">HACK DAY
+        <input type="text" name="kw" id="kw">
+        <button id="search_btn" type="submit" class="pure-button pure-button-primary">Search</button>
+    </div>
+        <br/>
+        <br/>
+        <br/>
+    <!--input end-->
+
+
+<div id ="blackground">
+    <br/>
+    <div id="wrapper">
+        <div id="columns">
+        </div>
+    </div>
+</div>
+
+
+
+
+<link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.3.0/grids-min.css">
+<script type="text/javascript">var MOJITO_INIT=new Date().getTime();</script>
+<meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+<script src="http://yui.yahooapis.com/3.13.0/build/yui/yui-min.js"></script>
+<script>
+
+YUI.add('search_image_module', function (Y) {
+    Y.namespace('search_image').pp = 30;
+     Y.namespace('search_image').offset = 1;
+      Y.namespace('search_image').kw = '';
+
+    //namespace search_image;
+    Y.namespace('search_image').search = function (kw, offset, callback)
+    {
+        if (kw) {
+            sql = 'select * from json where url="m.search.yahoo.com/v1/en-US/i/view?p='+kw
+            +'&o=js&native=1&n='+ Y.namespace('search_image').pp
+            +'&b='+offset+'"';
+
+            var q = Y.YQL(sql, {
+                //Tell JSONP to not cache this request so we get new images on each request
+                allowCache: false,
+                on: {
+                    success: function(r) {
+                        if (r.query && r.query.results) {
+                            if ((r.query.results.json.results) instanceof Array) {
+                                callback(r.query.results.json.results);
+                            } else {
+
+                                callback(false);
+
+                            }
+                        }
+                    }
+                }
+            });
+            q.send;
+            //Y.later(8000, q, q.send, null, true);
+        }
+    };
+    Y.namespace('search_image').next =  function(callback)
+    {
+        kw = Y.namespace('search_image').kw;
+        offset = Y.namespace('search_image').offset;
+        Y.namespace('search_image').search(kw, offset, callback);
+        Y.namespace('search_image').offset = Y.namespace('search_image').offset+Y.namespace('search_image').pp;
+    }
+}, '0.0.1', {
+    requires: ['node', 'yql']
+});
+
+
+
+
+
+YUI.add('scroll_module', function (Y) {
+
+
+    Y.namespace('scroll').cp=1;//initial
+    Y.namespace('scroll').length = 1;
+    Y.namespace('scroll').callback = function(){};
+    Y.namespace('scroll').reset = function() {
+         Y.namespace('scroll').cp = 1;
+         Y.namespace('scroll').length = 1
+    }
+
+    var body = Y.one('body');
+
+    body.plug(Y.Plugin.ScrollInfo);
+    body.scrollInfo.on('scrollToBottom', function (e) {
+        Y.namespace('scroll').cp =  Y.namespace('scroll').cp+ Y.namespace('scroll').length ;
+        Y.namespace('scroll').callback();
+
+    });
+
+
+},  '0.0.1', {
+    requires: ['node-scroll-info' , 'node']
+});
+
+///process
+YUI().use('search_image_module','querystring-parse', 'scroll_module', function(Y) {
+
+    search_result_cb = function (data) {
+            template = "<div class='pin>"
++" <img src='{imgsrc}'>"
++" <img src='{imgsrc}'>"
++"<p></p></div>";
+            node = Y.one('#columns');
+
+            if (data) {
+                for (i in data) {
+                    allResult = node.getHTML();
+                    rowImgTag =  Y.Lang.sub(template, {imgsrc: data[i].turlL});
+                    allResult = allResult + rowImgTag;
+                    node.setHTML(allResult);
+
+                }
+
+            }
+        };
+        Y.namespace('search_image').search_result_cb = search_result_cb;
+
+//         Y.namespace('search_image').next(search_result_cb);
+
+    Y.namespace('scroll').callback = function() {
+
+        Y.namespace('search_image').next(search_result_cb);
+    }
+
+
+     search_btn = Y.one('#search_btn');
+     search_btn.on('click', function(){
+         Y.one('#columns').setHTML('');
+         kw = Y.one('#kw').get('value');
+         if (kw) {
+             Y.namespace('search_image').kw = kw;
+
+             Y.namespace('search_image').next(
+                 Y.namespace('search_image').search_result_cb
+             );
+         }
+     });
+});
+
+</script>
+
+<script src="/static/Js/assets/socket.io.js"></script>
+<script>
+/// YUI().use('node', function(Y) {
+///
+///     socket_url = 'http://noodlesoil-lm.tpcity.corp.yahoo.com:8667/';
+///     if (io) {
+///         var socket = io.connect(socket_url);
+///
+///         socket.on('news', function (data) {
+///             if (data) {
+///                 node = Y.one("#image_server_respone");
+///                 node.setHTML(data.image);
+///             }
+///         });
+///     }
+/// });
+///
+
+
+YUI.add('socket_io_module', function (Y) {
+if (io != undefined) {
+    Y.namespace('search_image').io = io;
+    if (Y.namespace('search_image').io) {
+         socket_url = 'http://noodlesoil-lm.tpcity.corp.yahoo.com:8667/';
+        Y.namespace('search_image').socket = io.connect(socket_url);
+
+        //socket.on('news', function (data) {
+        //    if (data) {
+        //        node = Y.one("#image_server_respone");
+        //        node.setHTML(data.image);
+        //    }
+        //});
+    }
+}
+
+}, '0.0.1', {
+    requires: ['node', 'yql']
+});
+
+
+YUI.add('panel_module', function (Y) {
+
+      var panel = new Y.Panel({
+        render   : true,
+        visible  : false,
+        modal    : true,
+        centered : true,
+        bodyContent : ''
+    });
+    Y.namespace('panel').panel = panel;
+}, '0.0.1', {
+    requires: ['panel', 'node']
+});
+
+
+
+
+////run
+YUI().use('search_image_module','node','socket_io_module','panel_module', function(Y) {
+    var nodes = Y.all('#wrapper img');
+
+     var onClick = function(e) {
+         img_src = e.currentTarget.get('src');
+         console.log("src::"+img_src);
+         Y.namespace('search_image').socket.emit('get_filter_image', {img_url: img_src});
+
+         Y.namespace('search_image').socket.on('get_filter_image_callback',  function (data) {
+             if (data) {
+                 //                 node = Y.one("#image_server_respone");
+                 //                 node.setHTML(data.image);
+
+                 panel  = Y.namespace('panel').panel;
+                 //console.log(data);
+                 imgTagALL = '';
+                 for (index in data) {
+                     imgTag = "<img src='"+data[index].url+"' class='show_img_small'>";
+                     imgTagALL = imgTagALL+imgTag;
+                 }
+
+                 defaultImg  = "<img src='"+data.a.url+"' >";
+
+                 imgTagALL = imgTagALL+"<div id='show_img_large'>"+defaultImg+"<div>";
+                 imgTagALL = "<div id='show_img_wrapper'>"+imgTagALL+"</div>";
+
+                 panel.get('contentBox').setHTML(imgTagALL);
+                 panel.show();
+                 panel.align();
+                 showImgOnClick = function(e) {
+                     img_src = e.currentTarget.get('src');
+                      Y.one('#show_img_large').setHTML("<img src='"+img_src+"' >");
+                 };
+
+                 Y.one('#show_img_wrapper').delegate('click', showImgOnClick, 'img');
+                 Y.all('.yui3-widget-mask').on('click', function(){
+                     console.log("hihi");
+                     panel  = Y.namespace('panel').panel;
+                     panel.hide();
+                 });
+
+
+             }
+         });
+         /*
+          panel  = Y.namespace('panel').panel;
+                panel.get('contentBox').setHTML('<img src="http://ecx.images-amazon.com/images/I/61jcbi6zZjL.jpg">');
+                panel.show();
+                panel.align();
+*/
+
+
+
+
+        // addClass('highlight'); // e.currentTarget === #demo li
+         // e.target.setHTML('Thanks for the click!'); // e.target === #demo li or #demo li em
+         // e.container.setStyle('border', '5px solid #FFA100'); // e.container === #demo
+
+         // nodes.filter(':not(.highlight)').setHTML('What about me?');
+         // console.log(e.currentTarget);
+
+     };
+
+     Y.one('#wrapper').delegate('click', onClick, 'img');
+     Y.all('.yui3-widget-mask').on('click', function(){
+         console.log("hihi");
+         panel  = Y.namespace('panel').panel;
+         panel.hide();
+     });
+
+
+});
+
+</script>
+

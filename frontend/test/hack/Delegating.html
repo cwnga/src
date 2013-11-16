@@ -1,0 +1,31 @@
+
+<script src="http://yui.yahooapis.com/3.13.0/build/yui/yui-min.js"></script>
+<style>
+
+#demo li {
+    height: 3em;
+}
+</style>
+<ul id="demo">
+<li id='test1'><em>Click me if you don't mind...</em></li>
+<li id='test2'><em>Click me if you don't mind...</em></li>
+<li id='test3'><em>Click me if you don't mind...</em></li>
+<li id='test4'><em>Click me if you don't mind...</em></li>
+</ul>
+
+<script type="text/javascript">
+YUI().use('node', function(Y) {
+    var nodes = Y.all('#demo li');
+
+    var onClick = function(e) {
+        e.currentTarget.addClass('highlight'); // e.currentTarget === #demo li
+        e.target.setHTML('Thanks for the click!'); // e.target === #demo li or #demo li em
+        e.container.setStyle('border', '5px solid #FFA100'); // e.container === #demo
+
+        nodes.filter(':not(.highlight)').setHTML('What about me?');
+        console.log(e.currentTarget);
+    };
+
+    Y.one('#demo').delegate('click', onClick, 'li');
+});
+</script>
